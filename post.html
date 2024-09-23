@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Device Detection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to Sports Hub</h1>
+    <div id="device-info"></div>
+
+    <script>
+        function getDeviceInfo() {
+            const userAgent = navigator.userAgent;
+            let device = "Unknown Device";
+
+            if (/iPhone/i.test(userAgent)) {
+                device = "iPhone";
+            } else if (/Android/i.test(userAgent)) {
+                device = "Android Device";
+            }
+
+            document.getElementById("device-info").innerText = "You are visiting from: " + device;
+
+            // إرسال المعلومات إلى الرابط المحدد
+            sendDeviceInfo(device);
+        }
+
+        function sendDeviceInfo(device) {
+            fetch('https://eoikyi97olhn7kn.m.pipedream.net', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ device: device })
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log('Device info sent successfully!');
+                } else {
+                    console.error('Failed to send device info:', response.status);
+                }
+            })
+            .catch(error => {
+                console.error('Error sending device info:', error);
+            });
+        }
+
+        getDeviceInfo();
+    </script>
+</body>
+</html>
